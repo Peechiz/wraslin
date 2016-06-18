@@ -5,3 +5,11 @@ table {
 #myChart{
   margin-top: 30px;
 }
+
+h4 {
+  color: lightgrey;
+}
+
+h4 span{
+  color: black;
+}

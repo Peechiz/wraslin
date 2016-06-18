@@ -59,7 +59,7 @@ $(function(){
     myChart.update()
   }
 
-
+  // fill the moves reference chart
   keys.forEach(key => {
     $('#moveRef tbody').append(`<tr><td>${key}</td><td>${moves[key].name}</td><td>${moves[key].beats}</td></tr>`)
   })
@@ -137,19 +137,34 @@ $(function(){
 
   //console.log('opponent data',moveData.get());
 
+
+
+
   $('#choose').click(ev=>{
     ev.preventDefault();
-    fightType = $('#fight').val();
+    var fightType = $('#fight').val();
+    var id = $('#opponent').val();
+    var opponent = opponents[id].slug;
+
+    $('#opponentName').text( opponents[id].name );
+
     $('#fight').attr('disabled','true');
+    $('#opponent').attr('disabled','true');
     $('#choose').addClass('hidden');
     $('#controls').removeClass('hidden').addClass('show');
+
     // get initial game state
-    var game = $.ajax({
+    $.ajax({
       method:"POST",
       url:`https://umbelmania.umbel.com/${fightType}/`,
-      body: post
+      headers: {'Content-Type':'application/json'},
+      body: {
+        "opponent": opponent,
+        "player_name": "Chris Impicciche",
+        "email": "cimpicci@gmail.com"
+      }
     }).done(function(data){
-
+      console.log(data);
     });
   })
 
