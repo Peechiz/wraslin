@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FIGHT</title>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="opponents.js"></script>
+  <script type="text/javascript" src="moves.js"></script>
+  <script type="text/javascript" src="fight.js"></script>
+</head>
+<body>
+  <div class="container">
+
+
+    <div class="row">
+      <div class="col-md-4">  <!-- Form Column -->
+        <h1>Fight!</h1>
+
+        <form id='form' action="#">
+
+          <div class="form-group">
+            <label for="fight">Fight Type: </label>
+            <select class="form-control" name="fight" id='fight'>
+              <option value="training">Training!</option>
+              <option value="championship">Championship</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="pattern">Pattern: </label>
+            <input class="form-control" id="pattern" type="text" placeholder="abcd..." name="pattern">
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-info" id="rando">Rando Pattern</button>
+          </div>
+
+          <div class="form-group">
+            <label for="calls">Number of Moves Sets: </label>
+            <input class="form-control" type="text" id="calls" name="calls">
+          </div>
+          <input class="btn btn-primary" id="submit" type="submit">
+        </form>
+      </div>
+      <div class="col-md-4"> <!-- Move Table Column -->
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>Round</th>
+              <th>Your Move</th>
+              <th>His Move</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="round">
+              <td>1</td>
+              <td>A</td>
+              <td>G</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-4"> <!-- Graph Column -->
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div id="moveRef">
+
+          <table class='table table-striped table-condensed'>
+            <thead>
+              <tr>
+                <th>Abbr</th>
+                <th>Move</th>
+                <th>Beats</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
