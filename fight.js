@@ -81,27 +81,15 @@ $(function(){
   $('#rando').click( (ev) => {
     ev.preventDefault();
     $('#pattern').attr('value', randoWord())
-  })
+  });
 
-  var moves = {
-    get: function(player){
-      var data: [];
+  var moveData = {
+    get: function(){
+      var data = [];
       keys.forEach( key =>{
-        data.push(this[player][key])
+        data.push(moveData.opponent[key])
       })
       return data;
-    },
-    player: {
-      A: 0,
-      B: 0,
-      C: 0,
-      D: 0,
-      E: 0,
-      F: 0,
-      G: 0,
-      H: 0,
-      I: 0,
-      J: 0
     },
     opponent: {
       A: 0,
@@ -116,6 +104,8 @@ $(function(){
       J: 0
     },
   }
+
+  console.log('opponent data',moveData.get());
 
   $('#submit').click(ev=>{
     ev.preventDefault();
