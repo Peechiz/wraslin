@@ -1,5 +1,6 @@
 
 $(function(){
+  var round = 0;
   var keys = 'abcdefghij'.toUpperCase().split('');
 
   var ctx = document.getElementById("myChart");
@@ -48,6 +49,18 @@ $(function(){
     }
   })
 
+  var chartData = myChart.data.datasets[0].data;
+
+  function updateChart(arr){
+    for (var i = 0; i < arr.length; i++) {
+      chartData[i] = arr[i];
+    }
+    myChart.update()
+  }
+
+  //updateChart([10,9,8,7,6,5,4,3,2,1]);
+
+
   // TODO add function to check result of round, color tablerow appropriately
 
   var fightType = $('#fight').val()
@@ -91,6 +104,9 @@ $(function(){
       })
       return data;
     },
+    put: function(move){
+      moveData.opponent[move]++
+    },
     opponent: {
       A: 0,
       B: 0,
@@ -105,7 +121,31 @@ $(function(){
     },
   }
 
-  console.log('opponent data',moveData.get());
+  function outcome(X,Y){
+    if (X === Y) {
+      return ''
+    }
+    var isSuccess = false;
+    moves[X].beats.forEach(move =>{
+      if (Y === move){
+        isSuccess = true;
+      }
+    })
+    if (isSuccess){
+      return 'success'
+    }
+    else {
+      return 'danger'
+    }
+  }
+
+  function updateTable(playerMove,opponentMove){
+    var rowClass = outcome(playerMove,opponentMove);
+    $('#moveTable tbody').append(`<tr class="${rowClass}"><td>${round}</td><td>${playerMove}</td><td>${opponentMove}</td></tr>`);
+    round++;
+  }
+
+  //console.log('opponent data',moveData.get());
 
   $('#submit').click(ev=>{
     ev.preventDefault();
@@ -116,16 +156,20 @@ $(function(){
     console.log('pattern: ',pattern);
     console.log('number of calls: ',calls);
 
+    // define promise array?
+
     for (var i = 0; i < calls; i++) {
 
       console.log('call#',i);
       for (var j = 0; j < pattern.length; j++) {
         var move = pattern[j]
         console.log(move);
+        // for each move in a pattern, make a post request with the associated player move
       }
-      // for each move in a pattern, make a post request with the associated player move
 
-      //on receiving opponent move, update
+      //on receiving opponent move, update the graph and the #moveTable
+      //
+      //  ^ updateChart( moveData.get() )
 
     }
 
@@ -137,5 +181,9 @@ $(function(){
     // });
   })
 
+  // console.log('updating table A G, B E, J C');
+  // updateTable('A','G');
+  // updateTable('B','B');
+  // updateTable('J','C');
 
 })
