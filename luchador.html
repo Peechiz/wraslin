@@ -27,25 +27,34 @@
               <option value="training">Training!</option>
               <option value="championship">Championship</option>
             </select>
+            <input class="btn btn-primary" id="choose" type="submit" value="CHOOSE">
           </div>
+          <div id="controls" class="hidden">
+            <div class="form-group">
+              <label for="pattern">Pattern: </label>
+              <input class="form-control" id="pattern" type="text" placeholder="abcd..." name="pattern">
+            </div>
 
-          <div class="form-group">
-            <label for="pattern">Pattern: </label>
-            <input class="form-control" id="pattern" type="text" placeholder="abcd..." name="pattern">
-          </div>
+            <div class="form-group">
+              <button class="btn btn-info" id="rando">Rando Pattern</button>
+            </div>
 
-          <div class="form-group">
-            <button class="btn btn-info" id="rando">Rando Pattern</button>
-          </div>
+            <div class="form-group">
+              <label for="calls">Number of Moves Sets: </label>
+              <input class="form-control" type="text" id="calls" name="calls">
+            </div>
+            <input class="btn btn-primary" id="submit" type="submit">
 
-          <div class="form-group">
-            <label for="calls">Number of Moves Sets: </label>
-            <input class="form-control" type="text" id="calls" name="calls">
           </div>
-          <input class="btn btn-primary" id="submit" type="submit">
         </form>
       </div>
       <div class="col-md-4"> <!-- Move Table Column -->
+
+        <br>
+        <h4>Opponent: <span id="opponentName"></span></h4>
+        <h4>Rounds Remaining: <span id="roundsRemaining"></span></h4>
+        <h4>Score: <span id="score"></span></h4>
+
         <table id="moveTable" class='table table-condensed table-bordered'>
           <thead>
             <tr>

@@ -10,7 +10,7 @@ $(function(){
       labels: keys,
       datasets: [{
         label: 'opponent move frequency',
-        data: [1,2,3,4,5,50,7,8,9,10],
+        data: [0,0,0,0,0,0,0,0,0,0],
         backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -51,23 +51,13 @@ $(function(){
 
   var chartData = myChart.data.datasets[0].data;
 
+  // only to be used in conjunction with moveData object
   function updateChart(arr){
     for (var i = 0; i < arr.length; i++) {
       chartData[i] = arr[i];
     }
     myChart.update()
   }
-
-  //updateChart([10,9,8,7,6,5,4,3,2,1]);
-
-
-  // TODO add function to check result of round, color tablerow appropriately
-
-  var fightType = $('#fight').val()
-  $('#fight').change( ev=>{
-    ev.preventDefault();
-    fightType = $('#fight').val();
-  })
 
 
   keys.forEach(key => {
@@ -146,6 +136,22 @@ $(function(){
   }
 
   //console.log('opponent data',moveData.get());
+
+  $('#choose').click(ev=>{
+    ev.preventDefault();
+    fightType = $('#fight').val();
+    $('#fight').attr('disabled','true');
+    $('#choose').addClass('hidden');
+    $('#controls').removeClass('hidden').addClass('show');
+    // get initial game state
+    var game = $.ajax({
+      method:"POST",
+      url:`https://umbelmania.umbel.com/${fightType}/`,
+      body: post
+    }).done(function(data){
+
+    });
+  })
 
   $('#submit').click(ev=>{
     ev.preventDefault();
