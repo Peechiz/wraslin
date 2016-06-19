@@ -138,11 +138,15 @@ $(function(){
   //console.log('opponent data',moveData.get());
 
 
-
+  var game;
+  var signature;
+  var roundsRemain = $('#roundsRemaining');
+  var score = $('#score');
+  var fightType;
 
   $('#choose').click(ev=>{
     ev.preventDefault();
-    var fightType = $('#fight').val();
+    fightType = $('#fight').val();
     var id = $('#opponent').val();
     var opponent = opponents[id].slug;
 
@@ -156,15 +160,19 @@ $(function(){
     // get initial game state
     $.ajax({
       method:"POST",
-      url:`https://umbelmania.umbel.com/${fightType}/`,
-      headers: {'Content-Type':'application/json'},
-      body: {
-        "opponent": opponent,
+      url:`http://dax-cors-anywhere.herokuapp.com/https://umbelmania.umbel.com/${fightType}/`,
+      dataType: 'json',
+      data: {
         "player_name": "Chris Impicciche",
+        "opponent": opponent,
         "email": "cimpicci@gmail.com"
       }
     }).done(function(data){
       console.log(data);
+      game = data.gamestate;
+      roundsRemain.text(game.moves_remaining);
+      score.text(game.total_score);
+      signature = data.signature;
     });
   })
 
@@ -185,6 +193,20 @@ $(function(){
       for (var j = 0; j < pattern.length; j++) {
         var move = pattern[j]
         console.log(move);
+
+        // $.ajax({
+        //   method:"POST",
+        //   url:`http://dax-cors-anywhere.herokuapp.com/https://umbelmania.umbel.com/${fightType}/`,
+        //   dataType: 'json',
+        //   data: {
+        //     "gamestate": game,
+        //     "move": move,
+        //     "signature": signature
+        //   }
+        // }).done(function(data){
+        //
+        // });
+
         // for each move in a pattern, make a post request with the associated player move
       }
 
