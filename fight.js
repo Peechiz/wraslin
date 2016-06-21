@@ -168,7 +168,7 @@ $(function(){
         "email": "cimpicci@gmail.com"
       }
     }).done(function(data){
-      console.log(data);
+      console.log('initial state received');
       game = data.gamestate;
       roundsRemain.text(game.moves_remaining);
       score.text(game.total_score);
@@ -176,57 +176,55 @@ $(function(){
     });
   })
 
+
+  function Pattern(pattern,gameState){
+    if (pattern.length){
+      console.log('Move:',pattern[0]);
+      $.ajax({
+        method:"POST",
+        url:`http://dax-cors-anywhere.herokuapp.com/https://umbelmania.umbel.com/${fightType}/`,
+        dataType: 'json',
+        data: {
+          gamestate: gameState,
+          move: pattern[0],
+          signature: signature
+        }
+      }).done(function(data){
+        console.log('newGameState',data,'last signature:',signature);
+        gameState = data.gamestate;
+        signature = data.signature;
+
+        // update headings
+        roundsRemain.text(gameState.moves_remaining);
+        score.text(gameState.total_score);
+
+        // update table
+        // update chart
+
+        if (pattern) {
+          return Pattern(pattern.slice(1), gameState)
+        }
+      });
+    }
+    else {
+      console.log('Finished move pattern');
+    }
+
+  }
+
   $('#submit').click(ev=>{
     ev.preventDefault();
+    //setup?
+    console.log('signature: ',signature);
+    console.log('initial gamestate: ', game);
+
 
     // get pattern
     var pattern = $('#pattern').val().toUpperCase().split('');
     var calls = parseInt($('#calls').val()) || 1;
     console.log('pattern: ',pattern);
     console.log('number of calls: ',calls);
-
-    // define promise array?
-
-    for (var i = 0; i < calls; i++) {
-
-      console.log('call#',i);
-      for (var j = 0; j < pattern.length; j++) {
-        var move = pattern[j]
-        console.log(move);
-
-        // $.ajax({
-        //   method:"POST",
-        //   url:`http://dax-cors-anywhere.herokuapp.com/https://umbelmania.umbel.com/${fightType}/`,
-        //   dataType: 'json',
-        //   data: {
-        //     "gamestate": game,
-        //     "move": move,
-        //     "signature": signature
-        //   }
-        // }).done(function(data){
-        //
-        // });
-
-        // for each move in a pattern, make a post request with the associated player move
-      }
-
-      //on receiving opponent move, update the graph and the #moveTable
-      //
-      //  ^ updateChart( moveData.get() )
-
-    }
-
-    // post = $.ajax({
-    //   method:"GET",
-    //   url:`https://umbelmania.umbel.com/${fightType}/`,
-    // }).done(function(data){
-    //   data.
-    // });
+    Pattern(pattern,game);
   })
-
-  // console.log('updating table A G, B E, J C');
-  // updateTable('A','G');
-  // updateTable('B','B');
-  // updateTable('J','C');
 
 })
