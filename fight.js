@@ -10,7 +10,7 @@ $(function(){
       labels: keys,
       datasets: [{
         label: 'opponent move frequency',
-        data: [0,0,0,0,0,0,0,0,0,0],
+        data: [0,0,0,0,20,0,0,0,0,0],
         backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -64,12 +64,7 @@ $(function(){
     $('#moveRef tbody').append(`<tr><td>${key}</td><td>${moves[key].name}</td><td>${moves[key].beats}</td></tr>`)
   })
 
-  var post = {
-    "opponent": opponents[0].name,
-    "player_name": "Chris Impicciche",
-    "email": "cimpicci@gmail.com"
-  }
-
+  // populates input field with random pattern
   function randoWord(){
     var letters = []
     var getIndex = () => {
@@ -80,7 +75,6 @@ $(function(){
     }
     return letters.join('');
   }
-
   $('#rando').click( (ev) => {
     ev.preventDefault();
     $('#pattern').attr('value', randoWord())
@@ -140,9 +134,10 @@ $(function(){
 
   var game;
   var signature;
+  var fightType;
+
   var roundsRemain = $('#roundsRemaining');
   var score = $('#score');
-  var fightType;
 
   $('#choose').click(ev=>{
     ev.preventDefault();
@@ -168,11 +163,65 @@ $(function(){
         "email": "cimpicci@gmail.com"
       }
     }).done(function(data){
-      console.log('initial state received');
+      console.log('initial state received:');
+      console.log(data);
+
       game = data.gamestate;
+      signature = data.signature;
+
+
       roundsRemain.text(game.moves_remaining);
       score.text(game.total_score);
-      signature = data.signature;
+
+      $('#submit').click(ev=>{
+        ev.preventDefault();
+        //setup?
+
+        // get pattern
+        //var pattern = $('#pattern').val().toUpperCase().split('');
+        //var calls = parseInt($('#calls').val()) || 1;
+        //console.log('pattern: ',pattern);
+        //console.log('number of calls: ',calls);
+        // Pattern(pattern,game);
+
+        console.log('sanity check: ');
+        console.log('... var game:',game);
+        console.log('... var signature:',signature);
+
+        //TEST
+        $.ajax({
+          method:"POST",
+          url:`http://dax-cors-anywhere.herokuapp.com/https://umbelmania.umbel.com/${fightType}/`,
+          dataType: 'json',
+          // contentType: 'application/json',
+          data: {
+            gamestate: game,
+            move: 'A',
+            signature: signature
+          }
+        }).done(function(data){
+          console.log('test Move',data);
+          game = data.gamestate;
+          signature = data.signature;
+
+
+          $.ajax({
+            method:"POST",
+            url:`http://dax-cors-anywhere.herokuapp.com/https://umbelmania.umbel.com/${fightType}/`,
+            dataType: 'json',
+            // contentType: 'application/json',
+            data: {
+              gamestate: game,
+              move: 'B',
+              signature: signature
+            }
+          }).done(function(data){
+            console.log('test Move2',data);
+
+          })
+        })
+      })
+
     });
   })
 
@@ -212,19 +261,6 @@ $(function(){
 
   }
 
-  $('#submit').click(ev=>{
-    ev.preventDefault();
-    //setup?
-    console.log('signature: ',signature);
-    console.log('initial gamestate: ', game);
 
-
-    // get pattern
-    var pattern = $('#pattern').val().toUpperCase().split('');
-    var calls = parseInt($('#calls').val()) || 1;
-    console.log('pattern: ',pattern);
-    console.log('number of calls: ',calls);
-    Pattern(pattern,game);
-  })
 
 })
